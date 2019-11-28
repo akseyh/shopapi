@@ -11,9 +11,9 @@ app.get('/api', async (req, res) => {
     let data = 
         req.query.origin == 'hepsiburada'
         ? await shoppingProductInfo('https://www.hepsiburada.com/' + req.query.pathname):
-        req.query.origin == 'hepsiburada'
+        req.query.origin == 'trendyol'
         ? await shoppingProductInfo('https://www.trendyol.com/' + req.query.pathname):
-        req.query.origin == 'hepsiburada'
+        req.query.origin == 'gittigidiyor'
         ? await shoppingProductInfo('https://www.gittigidiyor.com/' + req.query.pathname):
         undefined;
 
