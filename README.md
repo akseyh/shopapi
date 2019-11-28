@@ -5,6 +5,6 @@ You can fetch data from shopping sites.
 #### From gittigidiyor.com, hepsiburada.com, trendyol.com now.
 
 ## Usage
-`/api/?origin={sitename}&pathname={path}`
+productinfoapi.herokuapp.com/api/?origin={sitename}&pathname={path}
 
 Site name must be just site name. Example gittigidiyor, hepsiburada or trendyol.
