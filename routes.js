@@ -10,7 +10,16 @@ app.use(function(req, res, next) {
   });
 
 app.get('/', (req, res) => {
-    res.sendFile( __dirname + "/templates/" + "index.html" );
+    let data = 
+        req.query.origin == 'hepsiburada'
+        ? await shoppingProductInfo('https://www.hepsiburada.com/' + req.query.pathname):
+        req.query.origin == 'trendyol'
+        ? await shoppingProductInfo('https://www.trendyol.com/' + req.query.pathname):
+        req.query.origin == 'gittigidiyor'
+        ? await shoppingProductInfo('https://www.gittigidiyor.com/' + req.query.pathname):
+        undefined;
+    if(data != undefined) res.send(data);
+    else res.sendFile( __dirname + "/templates/" + "index.html" )
 })
 
 app.get('/api', async (req, res) => {
