@@ -10,28 +10,30 @@ app.use(function(req, res, next) {
   });
 
 app.get('/', (req, res) => {
-    let data = 
-        req.query.origin == 'hepsiburada'
-        ? await shoppingProductInfo('https://www.hepsiburada.com/' + req.query.pathname):
-        req.query.origin == 'trendyol'
-        ? await shoppingProductInfo('https://www.trendyol.com/' + req.query.pathname):
-        req.query.origin == 'gittigidiyor'
-        ? await shoppingProductInfo('https://www.gittigidiyor.com/' + req.query.pathname):
-        undefined;
-    if(data != undefined) res.send(data);
-    else res.sendFile( __dirname + "/templates/" + "index.html" )
+    res.sendFile( __dirname + "/templates/" + "index.html" )
 })
 
-app.get('/api', async (req, res) => {
-    let data = 
-        req.query.origin == 'hepsiburada'
-        ? await shoppingProductInfo('https://www.hepsiburada.com/' + req.query.pathname):
-        req.query.origin == 'trendyol'
-        ? await shoppingProductInfo('https://www.trendyol.com/' + req.query.pathname):
-        req.query.origin == 'gittigidiyor'
-        ? await shoppingProductInfo('https://www.gittigidiyor.com/' + req.query.pathname):
-        "bulunamadı";
-    res.send(data);
+app.get('/api', (req, res) => {
+    try {
+        let siteLink = null
+        if(req.query.origin == 'hepsiburada') siteLink = 'https://www.hepsiburada.com'
+        else if(req.query.origin == 'trendyol') siteLink = 'https://www.trendyol.com'
+        else if(req.query.origin == 'gittigidiyor') siteLink = 'https://www.gittigidiyor.com'
+
+        if(!siteLink) res.send({IsSuccess: false, Result: 'Link hatalı!'})
+        shoppingProductInfo(`${siteLink}/${req.query.pathname}`)
+            .then(response => {
+                if(!response) res.send({IsSuccess: false, Result: 'Hata!'})
+                res.send({IsSuccess: true, Result: response}); 
+            })
+            .catch(err => {res.send({IsSuccess: false, Result: err})})
+    } catch(err) {
+        res.send({IsSuccess: false, Result: err})
+    }  
+})
+
+app.get('*', (req, res) => {
+    res.send({IsSuccess: false, Result: 'Bu dizin bulunamadı!'})
 })
 
 app.listen(port, () => console.log(`We are live on ${port}!`))
