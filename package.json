@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/akseyh/shopapi#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "shopping-product-info": "^1.0.2"
   }
 }
